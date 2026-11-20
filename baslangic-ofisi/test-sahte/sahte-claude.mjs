@@ -6,6 +6,7 @@
 //   SAHTE_BEKLE  bu kadar saniye bekler (durdurma testleri için)
 //   ORTAM_YAZ    API anahtarını görürse ANAHTAR_VAR, görmezse ANAHTAR_YOK yazar
 //   ARGS_YAZ     aldığı argümanları, klasörü ve girdiyi sonuç içine JSON olarak yazar
+//   GIRDI_YAZ    stream-json modunda aldığı girdiyi sonucun sonuna ekler
 const args = process.argv.slice(2);
 const e = process.env;
 const bicim = args.includes('--output-format') ? args[args.indexOf('--output-format') + 1] : 'text';
@@ -25,6 +26,7 @@ const parcalar = [];
 if (e.ARGS_YAZ) parcalar.push(JSON.stringify({ args, cwd: process.cwd(), girdi }));
 else parcalar.push((bicim === 'stream-json' ? e.SAHTE_RAPOR : e.SAHTE_PLAN) ?? 'tamam');
 if (e.ORTAM_YAZ) parcalar.push(e.ANTHROPIC_API_KEY ? 'ANAHTAR_VAR' : 'ANAHTAR_YOK');
+if (e.GIRDI_YAZ && bicim === 'stream-json') parcalar.push('GİRDİ:\n' + girdi);
 const sonuc = parcalar.join('\n');
 
 if (bicim === 'stream-json') {
