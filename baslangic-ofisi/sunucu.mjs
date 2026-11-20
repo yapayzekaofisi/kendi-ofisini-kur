@@ -16,7 +16,7 @@ const CANLI_TUT_MS = 25_000;
 const JS = 'text/javascript; charset=utf-8';
 
 // Sadece bu adresler dosya olarak verilir. Listede olmayan her şey 404: ayar, veri ve kod dışarı açılmaz.
-const STATIK = {
+export const STATIK = {
   '/': ['index.html', 'text/html; charset=utf-8'],
   '/index.html': ['index.html', 'text/html; charset=utf-8'],
   '/panel.js': ['panel.js', JS],

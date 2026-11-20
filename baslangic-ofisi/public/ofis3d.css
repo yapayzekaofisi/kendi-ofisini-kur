@@ -1,0 +1,46 @@
+/* 3D ofis görünümünün (ofis3d.js) etiket, oda adı, lejant ve ipucu stilleri.
+ * Sayfa şu renk değişkenlerini tanımlar: --metin, --soluk, --vurgu, --etiket-zemin.
+ * Kabın (.ofis3d) boyu ve zemini sayfaya aittir. */
+
+.ofis3d canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.ofis3d-etiketler { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.ofis3d-etiket, .ofis3d-oda { position: absolute; left: 0; top: 0; will-change: transform; }
+.ofis3d-etiket { pointer-events: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+  margin: 0; padding: 3px 10px 3px 8px; border-radius: 999px; border: 1px solid rgba(0,0,0,.06); background: var(--etiket-zemin);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: var(--metin); font-size: 11.5px; line-height: 1.3; white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 6px 16px rgba(0,0,0,.07); cursor: pointer; text-align: left; }
+.ofis3d-etiket:has(span:not([hidden])) { border-radius: 10px; padding: 4px 10px 4px 8px; }
+.ofis3d-etiket.sakla { opacity: 0; pointer-events: none; }
+.ofis3d-etiket.uyuyor:not(.sakla) { opacity: .74; } /* yatakhanede uyuyor */
+.ofis3d-etiketler[data-kompakt="1"] .ofis3d-etiket { font-size: 10px; padding: 2px 7px 2px 6px; }
+.ofis3d-etiketler[data-kompakt="1"] .ofis3d-etiket span { display: none; }
+.ofis3d-etiket:hover { border-color: var(--vurgu); }
+.ofis3d-etiket:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+.ofis3d-etiket b { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.ofis3d-etiket b::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #b8ab98; flex: none; }
+.ofis3d-etiket[data-durum="calisiyor"] b::before { background: #4da3ff; box-shadow: 0 0 0 3px rgba(77,163,255,.25); }
+.ofis3d-etiket[data-durum="dusunuyor"] b::before,
+.ofis3d-etiket[data-durum="planlaniyor"] b::before { background: #f2b33d; box-shadow: 0 0 0 3px rgba(242,179,61,.25); }
+.ofis3d-etiket[data-durum="bitti"] b::before { background: #4cc26a; }
+.ofis3d-etiket[data-durum="hata"] b::before { background: #ef5b4c; }
+.ofis3d-etiket span { color: var(--soluk); font-size: 11px; max-width: 190px; overflow: hidden; text-overflow: ellipsis; padding-left: 13px; }
+.ofis3d-etiket .duygu { position: absolute; right: -13px; top: -19px; width: 27px; height: 27px; display: grid; place-items: center;
+  font-size: 16px; font-style: normal; line-height: 1; border-radius: 50%; background: var(--etiket-zemin); border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,.16); opacity: 0; transform: scale(.3) translateY(6px); pointer-events: none;
+  transition: opacity .2s, transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.ofis3d-etiket .duygu.acik { opacity: 1; transform: none; }
+.ofis3d-etiketler[data-kompakt="1"] .ofis3d-etiket .duygu { width: 21px; height: 21px; font-size: 12.5px; right: -10px; top: -15px; }
+@media (prefers-reduced-motion: reduce) { .ofis3d-etiket .duygu { transition: opacity .2s; transform: none; } }
+.ofis3d-oda { display: flex; align-items: center; gap: 7px; color: var(--metin); font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 3px 9px 3px 7px; border-radius: 6px; white-space: nowrap; background: var(--etiket-zemin);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+.ofis3d-oda::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--oda-renk, #999); flex: none; }
+.ofis3d-ipucu, .ofis3d-lejant { position: absolute; bottom: 10px; font-size: 11px; color: var(--soluk); pointer-events: none;
+  background: var(--etiket-zemin); padding: 3px 9px; border-radius: 7px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ofis3d-ipucu { right: 10px; }
+.ofis3d-lejant { left: 10px; display: flex; gap: 11px; }
+.ofis3d-lejant span { display: inline-flex; align-items: center; gap: 5px; }
+.ofis3d-lejant i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+@media (max-width: 900px) { .ofis3d-ipucu { display: none; } }
+@media (max-width: 600px) { .ofis3d-lejant { gap: 8px; font-size: 10.5px; left: 8px; bottom: 8px; } }

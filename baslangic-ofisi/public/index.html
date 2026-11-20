@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yapay Zeka Ofisi</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2322252b'/%3E%3Crect x='14' y='20' width='36' height='24' rx='4' fill='%23e2b15b'/%3E%3Crect x='26' y='46' width='12' height='4' fill='%23e2b15b'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/ofis3d.css">
+<style>
+  :root {
+    --zemin: #f3f2ef; --kart: #ffffff; --cizgi: #e3e1dc; --metin: #1f2125; --soluk: #6b6f76;
+    --vurgu: #a8761f; --vurgu-zemin: #f6ead2; --etiket-zemin: rgba(255,255,255,.86);
+    --mavi: #2f7fd8; --amber: #c98a12; --yesil: #2e9b52; --kirmizi: #d4483a;
+    --golge: 0 1px 2px rgba(20,22,26,.05), 0 8px 24px rgba(20,22,26,.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --zemin: #15171a; --kart: #1d2024; --cizgi: #2c3036; --metin: #eceae6; --soluk: #9aa0a8;
+      --vurgu: #e2b15b; --vurgu-zemin: #3a3121; --etiket-zemin: rgba(29,32,36,.84);
+      --mavi: #5aa2ff; --amber: #f2b33d; --yesil: #4cc26a; --kirmizi: #ef6a5c;
+      --golge: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--zemin); color: var(--metin); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, select, textarea { font: inherit; color: inherit; }
+
+  .ust { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--cizgi); background: var(--kart); }
+  .ust h1 { margin: 0; font-size: 18px; font-weight: 650; letter-spacing: -.01em; }
+  .ust p { margin: 0; color: var(--soluk); font-size: 13px; }
+  .rozet { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--soluk); white-space: nowrap; }
+  .rozet::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--soluk); }
+  .rozet[data-hal="canli"]::before { background: var(--yesil); box-shadow: 0 0 0 3px color-mix(in srgb, var(--yesil) 22%, transparent); }
+  .rozet[data-hal="kopuk"]::before { background: var(--kirmizi); }
+
+  .uyari { margin: 12px 20px 0; padding: 12px 14px; border-radius: 10px; background: color-mix(in srgb, var(--kirmizi) 12%, var(--kart)); border: 1px solid color-mix(in srgb, var(--kirmizi) 35%, transparent); font-size: 14px; }
+  .uyari code { font-family: ui-monospace, Consolas, monospace; background: var(--kart); padding: 1px 6px; border-radius: 5px; }
+
+  .duzen { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 16px; padding: 16px 20px 24px; align-items: start; }
+  .sahne-kap { position: sticky; top: 16px; }
+  .ofis3d { position: relative; height: calc(100vh - 110px); min-height: 420px; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--kart) 70%, var(--zemin)), var(--zemin)); border: 1px solid var(--cizgi); box-shadow: var(--golge); }
+  .sahne-hata { position: absolute; inset: auto 16px 16px; margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--kart); border: 1px solid var(--cizgi); color: var(--soluk); font-size: 13.5px; }
+
+  .yan { display: grid; gap: 16px; }
+  .kart { background: var(--kart); border: 1px solid var(--cizgi); border-radius: 14px; padding: 16px; box-shadow: var(--golge); }
+  .kart h2 { margin: 0 0 10px; font-size: 14px; font-weight: 650; letter-spacing: .01em; }
+  textarea { width: 100%; resize: vertical; min-height: 96px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--cizgi); background: var(--zemin); line-height: 1.45; }
+  textarea:focus, select:focus, button:focus-visible { outline: 2px solid color-mix(in srgb, var(--vurgu) 60%, transparent); outline-offset: 1px; }
+  .satir { display: flex; align-items: center; gap: 10px; margin: 10px 0 12px; }
+  .satir label { color: var(--soluk); font-size: 13.5px; white-space: nowrap; }
+  select { flex: 1; min-width: 0; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--cizgi); background: var(--zemin); }
+  .ana { width: 100%; padding: 10px 14px; border: 0; border-radius: 10px; background: var(--metin); color: var(--kart); font-weight: 600; cursor: pointer; transition: transform .12s ease, opacity .12s ease; }
+  .ana:active { transform: scale(.98); }
+  .ana:disabled { opacity: .55; cursor: default; }
+  .form-mesaj { margin: 8px 0 0; min-height: 1.2em; font-size: 13px; color: var(--soluk); }
+  .form-mesaj.hata { color: var(--kirmizi); }
+  .gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .soluk { color: var(--soluk); font-size: 13.5px; margin: 0; }
+
+  .gorevler, .gunluk { list-style: none; margin: 0; padding: 0; }
+  .gorev { padding: 12px 0; border-top: 1px solid var(--cizgi); }
+  .gorev:first-child { border-top: 0; padding-top: 2px; }
+  .gorev-ust { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--soluk); }
+  .gorev-metin { margin: 4px 0 0; font-size: 14px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .durum { margin-left: auto; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--zemin); color: var(--soluk); }
+  .durum.calisiyor { background: color-mix(in srgb, var(--mavi) 15%, transparent); color: var(--mavi); }
+  .durum.planlaniyor, .durum.sirada { background: color-mix(in srgb, var(--amber) 16%, transparent); color: var(--amber); }
+  .durum.bitti { background: color-mix(in srgb, var(--yesil) 15%, transparent); color: var(--yesil); }
+  .durum.hata { background: color-mix(in srgb, var(--kirmizi) 14%, transparent); color: var(--kirmizi); }
+  .adimlar { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+  .adimlar li { display: flex; align-items: center; gap: 7px; }
+  .adimlar a { color: var(--vurgu); text-decoration: none; font-weight: 600; }
+  .adimlar a:hover { text-decoration: underline; }
+  .nokta { width: 7px; height: 7px; border-radius: 50%; background: var(--cizgi); flex: none; }
+  .nokta.calisiyor { background: var(--mavi); } .nokta.bitti { background: var(--yesil); } .nokta.hata { background: var(--kirmizi); }
+  .gorev-hata { margin: 6px 0 0; font-size: 13px; color: var(--kirmizi); overflow-wrap: anywhere; }
+  .plan { margin: 6px 0 0; font-size: 13px; color: var(--soluk); }
+  .durdur { margin-top: 8px; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--cizgi); background: transparent; font-size: 12.5px; cursor: pointer; }
+  .durdur:hover { border-color: var(--kirmizi); color: var(--kirmizi); }
+  .gunluk { max-height: 220px; overflow: auto; font-size: 12.5px; display: grid; gap: 5px; }
+  .gunluk time { color: var(--soluk); font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .gunluk b { font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .duzen { grid-template-columns: 1fr; padding: 12px 16px 24px; }
+    .sahne-kap { position: static; }
+    .ofis3d { height: 56vh; min-height: 320px; }
+    .ust { padding: 12px 16px; }
+    .uyari { margin: 12px 16px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ana { transition: none; } }
+</style>
+</head>
+<body>
+<header class="ust">
+  <div>
+    <h1 id="ofisAdi">Yapay Zeka Ofisi</h1>
+    <p>Görevi ver, genel müdür dağıtsın, çalışanların raporlasın.</p>
+  </div>
+  <span id="baglanti" class="rozet">Bağlanıyor…</span>
+</header>
+<div id="uyari" class="uyari" hidden>
+  <b>Claude Code bulunamadı.</b> Ofis açık ama görevler çalışmaz. Claude Code'u kur, terminalde <code>claude</code> yazıp hesabınla giriş yap, sonra ofisi yeniden başlat.
+</div>
+<main class="duzen">
+  <section class="sahne-kap" aria-label="3D ofis">
+    <div id="ofis3d" class="ofis3d"></div>
+    <p id="sahneHata" class="sahne-hata" hidden>3D görünüm bu tarayıcıda açılamadı. Görev vermeye ve raporları okumaya devam edebilirsin.</p>
+  </section>
+  <aside class="yan">
+    <form id="gorevFormu" class="kart">
+      <h2>Yeni görev</h2>
+      <label for="metin" class="gizli">Görev</label>
+      <textarea id="metin" rows="4" maxlength="20000" placeholder="Örnek: Yeni ürünümüz için üç kısa tanıtım metni yaz." required></textarea>
+      <div class="satir">
+        <label for="hedef">Kim yapsın</label>
+        <select id="hedef"><option value="otomatik">Genel müdür planlasın</option></select>
+      </div>
+      <button id="gonder" class="ana" type="submit">Görevi ver</button>
+      <p id="formMesaj" class="form-mesaj" role="status"></p>
+    </form>
+    <section class="kart" aria-labelledby="gorevBaslik">
+      <h2 id="gorevBaslik">Görevler</h2>
+      <p id="gorevYok" class="soluk">Henüz görev yok. 3D ofiste bir çalışana tıklayarak da ona görev verebilirsin.</p>
+      <ol id="gorevler" class="gorevler"></ol>
+    </section>
+    <section class="kart" aria-labelledby="gunlukBaslik">
+      <h2 id="gunlukBaslik">Canlı günlük</h2>
+      <ol id="gunluk" class="gunluk"></ol>
+    </section>
+  </aside>
+</main>
+<script type="importmap">{ "imports": { "three": "/vendor/three.module.min.js" } }</script>
+<script type="module" src="/panel.js"></script>
+</body>
+</html>
