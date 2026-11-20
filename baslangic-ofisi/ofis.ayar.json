@@ -1,0 +1,26 @@
+{
+  "ofisAdi": "Yapay Zeka Ofisim",
+  "patron": "Patron",
+  "port": 4800,
+  "host": "127.0.0.1",
+  "model": "sonnet",
+  "mesai": { "baslangic": "09:00", "bitis": "18:00" },
+  "calisanlar": [
+    {
+      "ad": "Araştırmacı",
+      "rol": "Araştırmacı",
+      "is": "Verilen konuyu internette araştırır, güvenilir kaynaklardan kısa ve maddeli bir özet çıkarır.",
+      "web": true
+    },
+    {
+      "ad": "Yazar",
+      "rol": "Metin Yazarı",
+      "is": "Tanıtım metni, gönderi açıklaması ve e-posta taslağı gibi kısa metinleri sade bir Türkçeyle yazar."
+    },
+    {
+      "ad": "Planlamacı",
+      "rol": "Planlamacı",
+      "is": "Büyük işleri adımlara böler, haftalık plan ve yapılacaklar listesi hazırlar."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "baslangic-ofisi",
+  "version": "1.0.0",
+  "description": "Kendi yapay zeka ofisin: kendi adlı ajanlar, genel müdür, görev kutusu ve 3D ofis.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node sunucu.mjs",
+    "kur": "node kur.mjs",
+    "test": "node --test"
+  }
+}
