@@ -37,6 +37,8 @@ export function ayarDenetle(ham) {
   const model = metin(ham.model) || 'sonnet';
   const codexYolu = metin(ham.codexYolu);
   const claudeYolu = metin(ham.claudeYolu);
+  // Ofise localhost ve IP dışında bir adla (ör. telefon için ayarlanmış bir makine adı) giriliyorsa o ad buraya yazılır.
+  const izinliAdresler = (Array.isArray(ham.izinliAdresler) ? ham.izinliAdresler : []).map(a => metin(a).toLowerCase()).filter(Boolean);
 
   let mesai = null;
   if (ham.mesai != null) {
@@ -69,7 +71,7 @@ export function ayarDenetle(ham) {
   });
 
   return {
-    ayar: { ofisAdi, patron: metin(ham.patron) || 'Patron', port, host, model, mesai, codexYolu, claudeYolu, calisanlar },
+    ayar: { ofisAdi, patron: metin(ham.patron) || 'Patron', port, host, model, mesai, codexYolu, claudeYolu, izinliAdresler, calisanlar },
     hatalar,
   };
 }

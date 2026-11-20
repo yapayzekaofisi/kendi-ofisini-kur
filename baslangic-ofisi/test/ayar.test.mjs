@@ -88,3 +88,8 @@ test('kur klasörleri ve CLAUDE.md üretir, var olanı ezmez', () => {
   assert.deepEqual(ikinci.korunan, ['yazar']);
   assert.ok(fs.readFileSync(md, 'utf8').includes('ELLE EKLENDİ'));
 });
+
+test('izinliAdresler küçük harfe çevrilir, boş ya da metin olmayanlar atılır', () => {
+  assert.deepEqual(ayarDenetle(ornek()).ayar.izinliAdresler, []);
+  assert.deepEqual(ayarDenetle(ornek({ izinliAdresler: [' Ofis.Local ', 5, ''] })).ayar.izinliAdresler, ['ofis.local']);
+});
