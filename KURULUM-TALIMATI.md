@@ -12,14 +12,17 @@
 - Çalışanlara Bash (komut çalıştırma) verme.
 - Hiçbir komutu yönetici (administrator, sudo) yetkisiyle çalıştırma.
 - İş tanımlarındaki **YASAK** bölümünü silme, gevşetme.
+- Komutları tek tek çalıştır; `&&` ile birleştirme. Kullanıcı her komutu ayrı ayrı görüp onaylayabilsin.
 
 ## 0. Ön kontrol
 
-Şunları çalıştır ve sonucu kullanıcıya söyle:
+Claude Code zaten çalışıyor; onu ayrıca kontrol etme. Şu iki komutu tek tek çalıştır ve sonucu kullanıcıya söyle:
 
 ```bash
 node --version
-claude --version
+```
+
+```bash
 git --version
 ```
 
@@ -42,16 +45,21 @@ Kullanıcıya hatırlat: hiçbir çalışan onun adına bir şey yayınlamaz, me
 
 ## 2. Depoyu al
 
+Ofis, Claude Code'un şu an açık olduğu klasörün içine `kendi-ofisini-kur` adıyla kurulur. Klonlamadan önce kullanıcıya bu klasörün tam yolunu söyle.
+
+Önce bak: bu klasörde `kendi-ofisini-kur/baslangic-ofisi` zaten varsa yeniden klonlama; o klasörü kullan ve 3. adıma geç. Yoksa:
+
 ```bash
 git clone https://github.com/yapayzekaofisi/kendi-ofisini-kur
-cd kendi-ofisini-kur/baslangic-ofisi
 ```
+
+Sonraki bütün komutları `kendi-ofisini-kur/baslangic-ofisi` klasöründe çalıştır.
 
 Git yoksa `https://github.com/yapayzekaofisi/kendi-ofisini-kur/archive/refs/heads/main.zip` dosyasını indir, aç ve `kendi-ofisini-kur-main/baslangic-ofisi` klasörüne geç.
 
 ## 3. ofis.ayar.json dosyasını yaz
 
-`baslangic-ofisi/ofis.ayar.json` dosyasını kullanıcının cevaplarıyla baştan yaz. Biçimi şu örnekteki gibi:
+Depodaki `baslangic-ofisi/ofis.ayar.json` sadece bir örnektir ("Yapay Zeka Ofisim", 3 çalışan); onun üzerine yaz. Dosyayı kullanıcının cevaplarıyla baştan yaz. Biçimi şu örnekteki gibi:
 
 ```json
 {

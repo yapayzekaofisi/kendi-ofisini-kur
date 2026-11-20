@@ -41,7 +41,7 @@ export function komutCoz(komut, { platform = process.platform, path: yol = proce
   if (/\.(cmd|bat)$/i.test(k) && dosyaVar(k)) {
     const metin = fs.readFileSync(k, 'utf8');
     const hedefler = [...metin.matchAll(/"%~?dp0%?\\([^"]+)"/gi)]
-      .map(m => path.join(path.dirname(k), m[1]))
+      .map(m => path.join(path.dirname(k), ...m[1].split(/[\\/]/)))
       .filter(h => /\.(c|m)?js$|\.exe$/i.test(h) && path.basename(h).toLowerCase() !== 'node.exe' && dosyaVar(h));
     if (hedefler.length) return hedefler[hedefler.length - 1];
   }

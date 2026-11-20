@@ -55,6 +55,14 @@ test('kurallar ofisi, rolü, rapor klasörünü ve yasakları söyler', () => {
   for (const p of ['Deneme Ofisi', 'Yazar', 'Ali', 'raporlar/2026-11-20-gorev-1', 'CLAUDE.md', 'YASAK', 'onay gerekiyor']) assert.ok(k.includes(p), p);
 });
 
+test('kurallar rapor klasörünün çalışanın kendi klasöründe olduğunu açıkça söyler', () => {
+  // Gerçek denemede ajan "raporlar/" klasörünü ortak bir klasör sanıp raporda "taşıyabilirsiniz" yazdı.
+  const { ayar } = ofis();
+  const k = kurallar(ayar.calisanlar[0], ayar, 'raporlar/2026-11-20-gorev-1');
+  assert.ok(k.includes(`calisanlar/${ayar.calisanlar[0].id}/raporlar/2026-11-20-gorev-1`), 'ofis köküne göre tam yol');
+  assert.match(k, /ortak bir klasör yok/i);
+});
+
 test('otomatik görev: genel müdür planlar, ajan çalışır, rapor yazılır', async () => {
   const { kok, kutu, veriDosyasi } = ofis();
   const son = await ortamla({ SAHTE_PLAN: '{"ozet":"tek adım","adimlar":[{"birim":"yazar","gorev":"Kısa metin yaz"}]}', SAHTE_RAPOR: 'Bitti raporu' }, async () => {

@@ -39,6 +39,18 @@ test('talimat izleyiciye seçimin onda olduğunu söyletir', () => {
   for (const p of [/API anahtar/i, /Bash/, /YASAK/]) assert.match(t, p);
 });
 
+test('talimat temiz klasör denemelerinde takılınan yerleri açıkça söyler', () => {
+  const t = oku('KURULUM-TALIMATI.md');
+  // Claude Code zaten çalışıyor; `claude --version` izin isteğine takıldı.
+  assert.ok(!t.includes('claude --version'), 'claude --version ön kontrolde olmamalı');
+  // Deneme depoyu yanlış klasöre klonladı; varsa yeniden klonlamamalı.
+  assert.match(t, /baslangic-ofisi.{0,80}(zaten )?varsa[^.]*klonlama/i);
+  // Depodaki örnek ayarın üzerine yazılacağı söylenmeli.
+  assert.match(t, /örnek[^.]*üzerine yaz/i);
+  // Birleşik komutlar izin isteğine takıldı.
+  assert.match(t, /komutları tek tek çalıştır/i);
+});
+
 test('talimattaki örnek ayar denetimden hatasız geçer', () => {
   const t = oku('KURULUM-TALIMATI.md');
   const blok = [...t.matchAll(/```json\n([\s\S]*?)```/g)].map(m => m[1]).find(b => b.includes('"ofisAdi"'));

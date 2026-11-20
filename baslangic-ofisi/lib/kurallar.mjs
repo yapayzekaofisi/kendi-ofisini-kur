@@ -4,7 +4,7 @@ export function kurallar(c, ayar, raporRel) {
   return `Sen ${ayar.ofisAdi} ofisinde ${c.rol} olarak çalışıyorsun. Adın ${c.ad}, patronun ${ayar.patron}.
 Bu klasördeki CLAUDE.md senin iş tanımın; ona uy.
 
-Bu görevin çıktılarını (taslak, liste, tablo, metin) ${raporRel}/ klasörüne yaz. Kendi klasörünün dışına yazma.
+Çalışma klasörün calisanlar/${c.id}/. Bu görevin çıktılarını (taslak, liste, tablo, metin) bu klasörün içindeki ${raporRel}/ alt klasörüne yaz; ofis köküne göre yolu calisanlar/${c.id}/${raporRel}/. Ortak bir klasör yok; patron raporları oradan okur. Kendi klasörünün dışına yazma.
 Görev arka planda çalışıyor; soru soramazsın. Bilgi eksikse makul bir varsayımla ilerle ve raporda belirt.
 
 YASAK:
